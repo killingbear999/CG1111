@@ -1,0 +1,32 @@
+// Give names to the pins of Arduino to be used and 
+// define their values as integer 
+int Ena = 7;	// IO port 7 will be connected to Pin9 (Enable) of L293D
+int Mot1 = 5;	// IO port 5 will be connected to Pin15 of L293D
+int Mot2 = 6; 	// IO port 6 will be connected to Pin10 of L293D
+int tp;		// define a variable for period of PWM
+int tON;	// define a variable for ON time
+int tOFF;	// define a variable for OFF time
+
+// Following section will be run once at the beginning. 
+void setup()
+{
+	pinMode(Ena, OUTPUT);	// This an OUTPUT from Arduino
+	pinMode(Mot1, OUTPUT);	// OUTPUT from Arduino
+	pinMode(Mot2, OUTPUT);	// OUTPUT from Arduino
+	digitalWrite(Ena, HIGH); 	//Enable pin is set to logic HIGH
+	digitalWrite(Mot1, LOW);	// Both control pins are LOW 
+	digitalWrite(Mot2, LOW);	// so motor won't spin
+	tp= 500; 	// Period is 500 microseconds; must be >= tON
+	tON= 300;		// ON for 300 microseconds
+	tOFF= tp-tON;		// OFF for remaining time of the period 
+}
+
+// Following section toggles pin 15 of L293D
+// between ON and OFF states according to the duty cycle desired
+void loop() 
+{
+	digitalWrite(Mot1, HIGH);	//port 5 (pin 15 of L293) is set to HIGH
+	delayMicroseconds(tON);		//wait for tON microseconds
+	digitalWrite(Mot1, LOW);	//port 5 is set to LOW
+	delayMicroseconds(tOFF);	//wait for tOFF microseconds
+}
